@@ -61,7 +61,8 @@ export function buildRoom(input: CreateRoomInput): Room {
     return {
       id: generateParticipantId(),
       name,
-      status: "waiting" as const,
+      // El admin ya se identificó al crear la sala.
+      status: (isAdmin ? "ready" : "waiting") as Participant["status"],
       isAdmin: isAdmin || undefined,
     };
   });
@@ -76,6 +77,7 @@ export function buildRoom(input: CreateRoomInput): Room {
           (input.adminName ?? "").trim().toLocaleLowerCase("es")
       ) {
         p.isAdmin = true;
+        p.status = "ready";
         marked = true;
       } else {
         delete p.isAdmin;

@@ -60,6 +60,14 @@ export function RoomApp({
     }
   }, [room?.status]);
 
+  useEffect(() => {
+    if (!room?.isAdmin || !room.adminParticipates || participantId) return;
+    const admin = room.participants.find((p) => p.isAdmin);
+    if (!admin) return;
+    localStorage.setItem(`yule-participant-${code}`, admin.id);
+    setParticipantId(admin.id);
+  }, [room, participantId, code]);
+
   const me = useMemo(
     () => room?.participants.find((p) => p.id === participantId) ?? null,
     [room, participantId],
@@ -108,12 +116,6 @@ export function RoomApp({
 
   if (!room) return null;
 
-  const adminNeedsIdentity =
-    isAdmin &&
-    room.adminParticipates &&
-    !participantId &&
-    room.status !== "drawn";
-
   const showPickerForGuest = !isAdmin && !participantId && room.status === "lobby";
 
   return (
@@ -125,6 +127,11 @@ export function RoomApp({
         <h1 className="font-display mt-1 text-3xl text-yule-cream">
           {room.status === "drawn" ? "Sorteo listo" : "Esperando al círculo"}
         </h1>
+        {isAdmin && me ? (
+          <p className="mt-2 text-sm text-yule-mist">
+            Entraste como <span className="text-yule-gold">{me.name}</span>
+          </p>
+        ) : null}
       </header>
 
       {isAdmin && inviteUrl ? (
@@ -166,18 +173,7 @@ export function RoomApp({
           </nav>
 
           {tab === "lobby" ? (
-            <div className="flex flex-col gap-4">
-              {adminNeedsIdentity ? (
-                <ParticipantPicker
-                  room={room}
-                  onConfirmed={(id, next) => {
-                    setParticipantId(id);
-                    setRoom(next);
-                  }}
-                />
-              ) : null}
-              <LobbyList room={room} highlightId={participantId} />
-            </div>
+            <LobbyList room={room} highlightId={participantId} />
           ) : null}
 
           {tab === "mine" ? (
@@ -198,8 +194,9 @@ export function RoomApp({
               </div>
             ) : (
               <div className="surface-card text-center text-sm text-yule-mist">
-                Tu sobre aparecerá aquí cuando el administrador realice el
-                sorteo final.
+                {isAdmin && me
+                  ? `Hola ${me.name}. Tu sobre aparecerá aquí cuando hagas el sorteo final.`
+                  : "Tu sobre aparecerá aquí cuando el administrador realice el sorteo final."}
               </div>
             )
           ) : null}

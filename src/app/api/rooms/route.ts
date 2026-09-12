@@ -23,9 +23,15 @@ export async function POST(request: Request) {
 
     await saveRoom(room);
 
+    const adminParticipant = room.participants.find((p) => p.isAdmin);
+
     return NextResponse.json({
-      room: toPublicRoom(room, { adminToken: room.adminToken }),
+      room: toPublicRoom(room, {
+        adminToken: room.adminToken,
+        viewerParticipantId: adminParticipant?.id,
+      }),
       adminToken: room.adminToken,
+      adminParticipantId: adminParticipant?.id ?? null,
       storage: getStorageMode(),
     });
   } catch (error) {

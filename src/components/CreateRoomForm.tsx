@@ -41,6 +41,12 @@ export function CreateRoomForm() {
         adminToken: data.adminToken as string,
       };
       localStorage.setItem(ADMIN_KEY, JSON.stringify(payload));
+      if (data.adminParticipantId) {
+        localStorage.setItem(
+          `yule-participant-${payload.code}`,
+          data.adminParticipantId as string,
+        );
+      }
       router.push(`/sala/${payload.code}?admin=${payload.adminToken}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado.");
