@@ -29,26 +29,26 @@ export function InviteShare({
   }
 
   const whatsappText = encodeURIComponent(
-    `🎄 ¡Amigo Secreto para Yule!\n\nÚnete a la sala ${roomCode} y confirma tu nombre:\n${inviteUrl}`,
+    `Amigo Secreto para Yule\n\nSala ${roomCode}:\n${inviteUrl}`,
   );
   const whatsappHref = `https://api.whatsapp.com/send?text=${whatsappText}`;
 
   return (
     <section className="surface-card flex flex-col gap-3">
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-yule-gold/70">
-          Link de invitación
+        <p className="text-[0.8125rem] font-medium text-yule-mist">
+          Invitación · {roomCode}
         </p>
-        <p className="mt-1 break-all text-sm text-yule-cream/90">{inviteUrl}</p>
-        <p className="mt-2 text-xs text-yule-mist">
-          Código de sala:{" "}
-          <span className="font-semibold text-yule-gold">{roomCode}</span>
-        </p>
+        <p className="mt-1 break-all text-sm text-yule-cream">{inviteUrl}</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <button type="button" onClick={() => void copyLink()} className="btn-secondary">
-          {copied ? "¡Copiado!" : "Copiar Link"}
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => void copyLink()}
+          className="btn-secondary"
+        >
+          {copied ? "Copiado" : "Copiar"}
         </button>
         <a
           href={whatsappHref}
@@ -56,7 +56,7 @@ export function InviteShare({
           rel="noopener noreferrer"
           className="btn-whatsapp"
         >
-          Compartir en WhatsApp
+          WhatsApp
         </a>
       </div>
     </section>

@@ -11,43 +11,35 @@ export function LobbyList({
 }) {
   return (
     <section className="flex flex-col gap-3">
-      <div className="flex items-end justify-between gap-2">
-        <h2 className="font-display text-xl text-yule-gold">Lobby en vivo</h2>
+      <div className="flex items-end justify-between gap-2 px-0.5">
+        <h2 className="text-[1.0625rem] font-semibold text-yule-cream">
+          Participantes
+        </h2>
         <p className="text-sm text-yule-mist">
-          <span className="font-semibold text-yule-cream">
-            {room.readyCount}
-          </span>{" "}
-          de {room.totalCount} listas
+          {room.readyCount}/{room.totalCount}
         </p>
       </div>
 
-      <ul className="flex flex-col gap-2">
-        {room.participants.map((p) => {
+      <ul className="overflow-hidden rounded-[1.125rem] bg-white">
+        {room.participants.map((p, index) => {
           const ready = p.status === "ready";
           const isYou = p.id === highlightId;
           return (
             <li
               key={p.id}
-              className={`flex min-h-12 items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition ${
-                isYou
-                  ? "border-yule-gold/70 bg-yule-gold/10"
-                  : "border-yule-pine/40 bg-yule-forest/30"
-              }`}
+              className={`flex min-h-14 items-center justify-between gap-3 px-4 py-3 ${
+                index > 0 ? "border-t border-black/[0.06]" : ""
+              } ${isYou ? "bg-blue-50/70" : ""}`}
             >
-              <span className="truncate text-base text-yule-cream">
+              <span className="truncate text-[1.0625rem] text-yule-cream">
                 {p.name}
-                {p.isAdmin ? (
-                  <span className="ml-2 text-xs text-yule-gold/80">Admin</span>
-                ) : null}
                 {isYou ? (
-                  <span className="ml-2 text-xs text-yule-mist">(tú)</span>
+                  <span className="ml-1.5 text-sm text-yule-mist">tú</span>
                 ) : null}
               </span>
               <span
-                className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-                  ready
-                    ? "bg-emerald-500/20 text-emerald-300"
-                    : "bg-white/10 text-yule-mist"
+                className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  ready ? "badge-ready" : "badge-wait"
                 }`}
               >
                 {ready ? "Listo" : "Esperando"}

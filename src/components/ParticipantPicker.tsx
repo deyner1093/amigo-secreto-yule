@@ -19,7 +19,6 @@ export function ParticipantPicker({
     setLoading(true);
     setError(null);
     try {
-      // Tras el sorteo solo necesitamos saber quién mira (sin mutar estado).
       if (room.status === "drawn") {
         localStorage.setItem(`yule-participant-${room.code}`, selectedId);
         const res = await fetch(
@@ -48,16 +47,16 @@ export function ParticipantPicker({
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <h2 className="font-display text-2xl text-yule-gold">¿Quién eres?</h2>
-        <p className="mt-1 text-sm text-yule-mist">
-          Toca tu nombre para confirmar. Solo tú verás tu amigo secreto.
-        </p>
+    <div className="flex flex-col gap-5">
+      <div className="text-center">
+        <h2 className="font-display text-[1.75rem] text-yule-cream">
+          ¿Quién eres?
+        </h2>
+        <p className="mt-1 text-sm text-yule-mist">Elige tu nombre</p>
       </div>
 
-      <ul className="flex flex-col gap-2">
-        {room.participants.map((p) => {
+      <ul className="overflow-hidden rounded-[1.125rem] bg-white">
+        {room.participants.map((p, index) => {
           const selected = selectedId === p.id;
           const alreadyReady = p.status === "ready";
           return (
@@ -65,17 +64,17 @@ export function ParticipantPicker({
               <button
                 type="button"
                 onClick={() => setSelectedId(p.id)}
-                className={`flex min-h-14 w-full items-center justify-between rounded-2xl border px-4 text-left text-base transition active:scale-[0.98] ${
-                  selected
-                    ? "border-yule-gold bg-yule-gold/15 text-yule-cream shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
-                    : "border-yule-pine/50 bg-yule-forest/40 text-yule-cream"
-                }`}
+                className={`flex min-h-14 w-full items-center justify-between px-4 text-left text-[1.0625rem] transition active:bg-black/[0.03] ${
+                  index > 0 ? "border-t border-black/[0.06]" : ""
+                } ${selected ? "bg-blue-50" : ""}`}
               >
-                <span className="font-medium">{p.name}</span>
-                {alreadyReady && room.status === "lobby" ? (
-                  <span className="text-xs text-emerald-300">Ya listo</span>
-                ) : selected ? (
-                  <span className="text-xs text-yule-gold">Seleccionado</span>
+                <span className="font-medium text-yule-cream">{p.name}</span>
+                {selected ? (
+                  <span className="text-[#007aff]">✓</span>
+                ) : alreadyReady && room.status === "lobby" ? (
+                  <span className="text-xs font-semibold text-[#248a3d]">
+                    Listo
+                  </span>
                 ) : null}
               </button>
             </li>
@@ -84,7 +83,7 @@ export function ParticipantPicker({
       </ul>
 
       {error ? (
-        <p className="rounded-xl bg-yule-crimson/20 px-3 py-2 text-sm text-yule-crimson-light">
+        <p className="rounded-[0.875rem] bg-red-50 px-3 py-2 text-sm text-yule-crimson">
           {error}
         </p>
       ) : null}
@@ -95,7 +94,11 @@ export function ParticipantPicker({
         onClick={() => void confirm()}
         className="btn-primary"
       >
-        {loading ? "Un momento…" : room.status === "drawn" ? "Ver mi sobre" : "Confirmar — estoy listo"}
+        {loading
+          ? "Un momento…"
+          : room.status === "drawn"
+            ? "Ver mi sobre"
+            : "Confirmar"}
       </button>
     </div>
   );

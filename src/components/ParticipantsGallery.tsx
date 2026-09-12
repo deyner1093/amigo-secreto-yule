@@ -5,20 +5,17 @@ import type { PublicRoom } from "@/lib/types";
 export function ParticipantsGallery({ room }: { room: PublicRoom }) {
   return (
     <section className="flex flex-col gap-3">
-      <div>
-        <h2 className="font-display text-xl text-yule-gold">Participantes</h2>
-        <p className="text-sm text-yule-mist">
-          Galería de la sala — sin revelar parejas.
-        </p>
-      </div>
+      <h2 className="px-0.5 text-[1.0625rem] font-semibold text-yule-cream">
+        Todos
+      </h2>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2.5">
         {room.participants.map((p) => (
           <article
             key={p.id}
-            className="flex min-h-[110px] flex-col justify-between rounded-2xl border border-yule-pine/50 bg-gradient-to-br from-yule-forest/60 to-yule-night/80 p-3"
+            className="flex min-h-[108px] flex-col justify-between rounded-[1.125rem] bg-white p-3.5 shadow-sm"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yule-gold/15 font-display text-lg text-yule-gold">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--ios-fill)] text-sm font-semibold text-[#007aff]">
               {p.name.trim().charAt(0).toUpperCase()}
             </div>
             <div>
@@ -26,7 +23,6 @@ export function ParticipantsGallery({ room }: { room: PublicRoom }) {
                 {p.name}
               </p>
               <p className="text-xs text-yule-mist">
-                {p.isAdmin ? "Administrador · " : ""}
                 {p.status === "ready" ? "Listo" : "Esperando"}
               </p>
             </div>

@@ -124,20 +124,18 @@ export function RoomApp({
   return (
     <div className="flex flex-col gap-5 pb-28">
       <header className="text-center">
-        <p className="text-xs uppercase tracking-[0.28em] text-yule-gold/70">
+        <p className="text-[0.8125rem] font-medium text-yule-mist">
           Sala {room.code}
         </p>
-        <h1 className="font-display mt-1 text-3xl text-yule-cream">
+        <h1 className="font-display mt-1 text-[1.75rem] text-yule-cream">
           {room.status === "drawn"
             ? "Sorteo listo"
             : showGuestWaiting
-              ? "Esperando el sorteo"
-              : "Esperando al círculo"}
+              ? "Esperando"
+              : "Lobby"}
         </h1>
         {isAdmin && me ? (
-          <p className="mt-2 text-sm text-yule-mist">
-            Entraste como <span className="text-yule-gold">{me.name}</span>
-          </p>
+          <p className="mt-1 text-sm text-yule-mist">{me.name}</p>
         ) : null}
       </header>
 
@@ -164,9 +162,7 @@ export function RoomApp({
           <RevealCard yourName={me.name} secretFriend={me.assignment} />
         ) : (
           <div className="surface-card text-center text-sm text-yule-mist">
-            <p className="mb-3">
-              El sorteo ya se hizo. Selecciona quién eres para ver tu sobre.
-            </p>
+            <p className="mb-3">El sorteo ya se hizo. Elige quién eres.</p>
             <ParticipantPicker
               room={room}
               onConfirmed={(id, next) => {
@@ -178,7 +174,7 @@ export function RoomApp({
         )
       ) : (
         <>
-          <nav className="grid grid-cols-3 gap-1 rounded-2xl border border-yule-pine/50 bg-yule-night/50 p-1">
+          <nav className="segmented">
             {(
               [
                 ["lobby", "Lobby"],
@@ -189,12 +185,8 @@ export function RoomApp({
               <button
                 key={id}
                 type="button"
+                data-active={tab === id}
                 onClick={() => setTab(id)}
-                className={`min-h-11 rounded-xl text-sm font-medium transition ${
-                  tab === id
-                    ? "bg-yule-holly text-yule-cream"
-                    : "text-yule-mist"
-                }`}
               >
                 {label}
               </button>
@@ -211,8 +203,8 @@ export function RoomApp({
             ) : (
               <div className="surface-card text-center text-sm text-yule-mist">
                 {isAdmin && me
-                  ? `Hola ${me.name}. Tu sobre aparecerá aquí cuando hagas el sorteo final.`
-                  : "Tu sobre aparecerá aquí cuando el administrador realice el sorteo final."}
+                  ? `Hola ${me.name}. Tu sobre aparecerá tras el sorteo.`
+                  : "Tu sobre aparecerá tras el sorteo."}
               </div>
             )
           ) : null}
@@ -222,10 +214,10 @@ export function RoomApp({
       )}
 
       {isAdmin && room.status === "lobby" ? (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-yule-pine/40 bg-yule-night/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-black/[0.06] bg-white/90 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
           <div className="mx-auto w-full max-w-md">
             {drawError ? (
-              <p className="mb-2 text-center text-sm text-yule-crimson-light">
+              <p className="mb-2 text-center text-sm text-yule-crimson">
                 {drawError}
               </p>
             ) : null}
@@ -233,12 +225,12 @@ export function RoomApp({
               type="button"
               disabled={!room.allReady || drawing}
               onClick={() => void runDraw()}
-              className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-45"
+              className="btn-primary w-full"
             >
               {drawing
                 ? "Sorteando…"
                 : room.allReady
-                  ? "Realizar Sorteo Final"
+                  ? "Realizar sorteo"
                   : `Esperando (${room.readyCount}/${room.totalCount})`}
             </button>
           </div>
