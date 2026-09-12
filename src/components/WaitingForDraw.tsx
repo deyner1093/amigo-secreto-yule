@@ -16,13 +16,13 @@ export function WaitingForDraw({
 
   return (
     <section className="flex flex-col items-center gap-5 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
-        <span className="waiting-pulse text-2xl text-[#007aff]">●</span>
+      <div className="hero-mark waiting-pulse text-xl" aria-hidden>
+        ✶
       </div>
 
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-[#248a3d]">Listo</p>
-        <h2 className="font-display text-[1.75rem] text-yule-cream">
+      <div className="space-y-1.5">
+        <p className="text-sm font-semibold text-[var(--ready)]">Estás listo</p>
+        <h2 className="font-display text-[2rem] text-yule-cream">
           Hola, {yourName}
         </h2>
         <p className="mx-auto max-w-[17rem] text-sm leading-relaxed text-yule-mist">
@@ -30,22 +30,22 @@ export function WaitingForDraw({
         </p>
       </div>
 
-      <div className="w-full space-y-2 rounded-[1.125rem] bg-white p-4 text-left">
+      <div className="surface-card w-full space-y-2 text-left">
         <div className="flex items-center justify-between text-sm">
           <span className="text-yule-mist">Progreso</span>
           <span className="font-semibold text-yule-cream">
             {room.readyCount} de {room.totalCount}
           </span>
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-[var(--ios-fill)]">
+        <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(42,36,31,0.08)]">
           <div
-            className="h-full rounded-full bg-[#007aff] transition-[width] duration-500"
+            className="h-full rounded-full bg-[linear-gradient(90deg,#d4a29a,var(--ember))] transition-[width] duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
-      <ul className="w-full overflow-hidden rounded-[1.125rem] bg-white text-left">
+      <ul className="list-shell w-full text-left">
         {room.participants.map((p, index) => {
           const ready = p.status === "ready";
           const isYou = p.id === yourId;
@@ -53,10 +53,10 @@ export function WaitingForDraw({
             <li
               key={p.id}
               className={`flex min-h-12 items-center justify-between px-4 py-3 ${
-                index > 0 ? "border-t border-black/[0.06]" : ""
-              } ${isYou ? "bg-blue-50/70" : ""}`}
+                index > 0 ? "border-t border-[var(--line)]" : ""
+              } ${isYou ? "bg-[rgba(180,92,85,0.08)]" : ""}`}
             >
-              <span className="truncate text-[0.9375rem] text-yule-cream">
+              <span className="truncate text-[0.95rem] text-yule-cream">
                 {p.name}
                 {isYou ? (
                   <span className="ml-1.5 text-xs text-yule-mist">tú</span>
@@ -75,7 +75,7 @@ export function WaitingForDraw({
       </ul>
 
       {room.allReady ? (
-        <p className="text-sm font-medium text-[#007aff]">
+        <p className="text-sm font-medium text-[var(--ember)]">
           Todos listos. Pronto llega el sorteo…
         </p>
       ) : null}

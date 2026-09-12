@@ -49,13 +49,11 @@ export function ParticipantPicker({
   return (
     <div className="flex flex-col gap-5">
       <div className="text-center">
-        <h2 className="font-display text-[1.75rem] text-yule-cream">
-          ¿Quién eres?
-        </h2>
+        <h2 className="font-display text-[2rem] text-yule-cream">¿Quién eres?</h2>
         <p className="mt-1 text-sm text-yule-mist">Elige tu nombre</p>
       </div>
 
-      <ul className="overflow-hidden rounded-[1.125rem] bg-white">
+      <ul className="list-shell">
         {room.participants.map((p, index) => {
           const selected = selectedId === p.id;
           const alreadyReady = p.status === "ready";
@@ -64,15 +62,15 @@ export function ParticipantPicker({
               <button
                 type="button"
                 onClick={() => setSelectedId(p.id)}
-                className={`flex min-h-14 w-full items-center justify-between px-4 text-left text-[1.0625rem] transition active:bg-black/[0.03] ${
-                  index > 0 ? "border-t border-black/[0.06]" : ""
-                } ${selected ? "bg-blue-50" : ""}`}
+                className={`flex min-h-14 w-full items-center justify-between px-4 text-left text-[1.05rem] transition ${
+                  index > 0 ? "border-t border-[var(--line)]" : ""
+                } ${selected ? "bg-[rgba(180,92,85,0.1)]" : "active:bg-black/[0.02]"}`}
               >
                 <span className="font-medium text-yule-cream">{p.name}</span>
                 {selected ? (
-                  <span className="text-[#007aff]">✓</span>
+                  <span className="text-[var(--ember)]">✓</span>
                 ) : alreadyReady && room.status === "lobby" ? (
-                  <span className="text-xs font-semibold text-[#248a3d]">
+                  <span className="text-xs font-semibold text-[var(--ready)]">
                     Listo
                   </span>
                 ) : null}
@@ -83,7 +81,7 @@ export function ParticipantPicker({
       </ul>
 
       {error ? (
-        <p className="rounded-[0.875rem] bg-red-50 px-3 py-2 text-sm text-yule-crimson">
+        <p className="rounded-2xl bg-[rgba(196,71,61,0.1)] px-3 py-2 text-sm text-yule-crimson">
           {error}
         </p>
       ) : null}

@@ -124,10 +124,8 @@ export function RoomApp({
   return (
     <div className="flex flex-col gap-5 pb-28">
       <header className="text-center">
-        <p className="text-[0.8125rem] font-medium text-yule-mist">
-          Sala {room.code}
-        </p>
-        <h1 className="font-display mt-1 text-[1.75rem] text-yule-cream">
+        <p className="text-sm font-medium text-yule-mist">Sala {room.code}</p>
+        <h1 className="font-display mt-1 text-[2rem] text-yule-cream">
           {room.status === "drawn"
             ? "Sorteo listo"
             : showGuestWaiting
@@ -214,7 +212,7 @@ export function RoomApp({
       )}
 
       {isAdmin && room.status === "lobby" ? (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-black/[0.06] bg-white/90 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--line)] bg-[rgba(236,233,239,0.88)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
           <div className="mx-auto w-full max-w-md">
             {drawError ? (
               <p className="mb-2 text-center text-sm text-yule-crimson">

@@ -36,10 +36,12 @@ export function InviteShare({
   return (
     <section className="surface-card flex flex-col gap-3">
       <div>
-        <p className="text-[0.8125rem] font-medium text-yule-mist">
+        <p className="text-sm font-medium text-yule-mist">
           Invitación · {roomCode}
         </p>
-        <p className="mt-1 break-all text-sm text-yule-cream">{inviteUrl}</p>
+        <p className="mt-1 break-all text-sm leading-relaxed text-yule-cream">
+          {inviteUrl}
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-2">

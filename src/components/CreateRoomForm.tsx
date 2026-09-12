@@ -56,9 +56,9 @@ export function CreateRoomForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
       <label className="flex flex-col gap-2">
-        <span className="px-0.5 text-[0.8125rem] font-medium text-yule-mist">
+        <span className="text-sm font-semibold text-yule-cream">
           Participantes
         </span>
         <textarea
@@ -69,17 +69,19 @@ export function CreateRoomForm() {
           className="field min-h-[150px] resize-y leading-relaxed"
         />
         {previewCount > 0 ? (
-          <span className="px-0.5 text-xs text-yule-mist">
+          <span className="text-xs text-yule-mist">
             {previewCount} {previewCount === 1 ? "persona" : "personas"}
           </span>
         ) : null}
       </label>
 
-      <div className="rounded-[0.875rem] bg-[var(--ios-fill)] px-4 py-3">
+      <div className="rounded-[1.25rem] border border-[var(--line)] bg-[rgba(255,253,249,0.55)] px-4 py-3.5">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-[0.9375rem] font-medium text-yule-cream">
-            Yo también juego
-          </p>
+          <div>
+            <p className="text-[0.95rem] font-semibold text-yule-cream">
+              Yo también juego
+            </p>
+          </div>
           <button
             type="button"
             role="switch"
@@ -93,23 +95,21 @@ export function CreateRoomForm() {
         </div>
 
         {adminParticipates ? (
-          <label className="mt-3 flex flex-col gap-2 border-t border-black/5 pt-3">
-            <span className="text-[0.8125rem] font-medium text-yule-mist">
-              Tu nombre
-            </span>
+          <label className="mt-3 flex flex-col gap-2 border-t border-[var(--line)] pt-3">
+            <span className="text-sm font-medium text-yule-mist">Tu nombre</span>
             <input
               type="text"
               value={adminName}
               onChange={(e) => setAdminName(e.target.value)}
               placeholder="María"
-              className="field bg-white"
+              className="field"
             />
           </label>
         ) : null}
       </div>
 
       {error ? (
-        <p className="rounded-[0.875rem] bg-red-50 px-3 py-2 text-sm text-yule-crimson">
+        <p className="rounded-2xl bg-[rgba(196,71,61,0.1)] px-3 py-2 text-sm text-yule-crimson">
           {error}
         </p>
       ) : null}
