@@ -5,9 +5,11 @@ import type { PublicRoom } from "@/lib/types";
 export function WaitingForDraw({
   room,
   yourName,
+  yourId,
 }: {
   room: PublicRoom;
   yourName: string;
+  yourId?: string | null;
 }) {
   const progress =
     room.totalCount > 0 ? (room.readyCount / room.totalCount) * 100 : 0;
@@ -51,7 +53,7 @@ export function WaitingForDraw({
       <ul className="w-full space-y-2 text-left">
         {room.participants.map((p) => {
           const ready = p.status === "ready";
-          const isYou = p.name === yourName;
+          const isYou = p.id === yourId;
           return (
             <li
               key={p.id}

@@ -6,6 +6,7 @@ import { LobbyList } from "@/components/LobbyList";
 import { ParticipantPicker } from "@/components/ParticipantPicker";
 import { ParticipantsGallery } from "@/components/ParticipantsGallery";
 import { RevealCard } from "@/components/RevealCard";
+import { WaitingForDraw } from "@/components/WaitingForDraw";
 import { useRoom } from "@/hooks/useRoom";
 import type { PublicRoom } from "@/lib/types";
 
@@ -116,7 +117,9 @@ export function RoomApp({
 
   if (!room) return null;
 
-  const showPickerForGuest = !isAdmin && !participantId && room.status === "lobby";
+  const showPickerForGuest =
+    !isAdmin && !participantId && room.status === "lobby";
+  const showGuestWaiting = !isAdmin && Boolean(me) && room.status === "lobby";
 
   return (
     <div className="flex flex-col gap-5 pb-28">
@@ -125,7 +128,11 @@ export function RoomApp({
           Sala {room.code}
         </p>
         <h1 className="font-display mt-1 text-3xl text-yule-cream">
-          {room.status === "drawn" ? "Sorteo listo" : "Esperando al círculo"}
+          {room.status === "drawn"
+            ? "Sorteo listo"
+            : showGuestWaiting
+              ? "Esperando el sorteo"
+              : "Esperando al círculo"}
         </h1>
         {isAdmin && me ? (
           <p className="mt-2 text-sm text-yule-mist">
@@ -144,9 +151,31 @@ export function RoomApp({
           onConfirmed={(id, next) => {
             setParticipantId(id);
             setRoom(next);
-            setTab("lobby");
           }}
         />
+      ) : showGuestWaiting && me ? (
+        <WaitingForDraw
+          room={room}
+          yourName={me.name}
+          yourId={participantId}
+        />
+      ) : !isAdmin && room.status === "drawn" ? (
+        me?.assignment ? (
+          <RevealCard yourName={me.name} secretFriend={me.assignment} />
+        ) : (
+          <div className="surface-card text-center text-sm text-yule-mist">
+            <p className="mb-3">
+              El sorteo ya se hizo. Selecciona quién eres para ver tu sobre.
+            </p>
+            <ParticipantPicker
+              room={room}
+              onConfirmed={(id, next) => {
+                setParticipantId(id);
+                setRoom(next);
+              }}
+            />
+          </div>
+        )
       ) : (
         <>
           <nav className="grid grid-cols-3 gap-1 rounded-2xl border border-yule-pine/50 bg-yule-night/50 p-1">
@@ -179,19 +208,6 @@ export function RoomApp({
           {tab === "mine" ? (
             room.status === "drawn" && me?.assignment ? (
               <RevealCard yourName={me.name} secretFriend={me.assignment} />
-            ) : room.status === "drawn" && !me ? (
-              <div className="surface-card text-center text-sm text-yule-mist">
-                <p className="mb-3">
-                  El sorteo ya se hizo. Selecciona quién eres para ver tu sobre.
-                </p>
-                <ParticipantPicker
-                  room={room}
-                  onConfirmed={(id, next) => {
-                    setParticipantId(id);
-                    setRoom(next);
-                  }}
-                />
-              </div>
             ) : (
               <div className="surface-card text-center text-sm text-yule-mist">
                 {isAdmin && me
